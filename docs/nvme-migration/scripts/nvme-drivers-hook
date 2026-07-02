@@ -1,0 +1,24 @@
+#!/bin/sh
+# Hook para forçar a inclusão dos drivers NVMe no initramfs
+# Isso evita que o boot falhe após atualizações de kernel
+
+PREREQ=""
+prereqs() {
+    echo "$PREREQ"
+}
+
+case $1 in
+    prereqs)
+        prereqs
+        exit 0
+        ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+# Adiciona os módulos essenciais do NVMe
+manual_add_modules nvme
+manual_add_modules nvme_core
+manual_add_modules nvme_pci
+
+exit 0
